@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -17,12 +17,17 @@ const DataTable = ({ products }) => {
           <TableRow>
             {objectKeys.map((item) => {
               if (item !== "price_history")
-                return <TableCell align="center">{item[0].toUpperCase() + item.substring(1)}</TableCell>;
+                return (
+                  <TableCell align="center">
+                    {item[0].toUpperCase() + item.substring(1)}
+                  </TableCell>
+                );
             })}
           </TableRow>
         </TableHead>
         <TableBody>
           {products.map((row, i) => {
+
             let filteredRow = Object.values(row);
 
             return (
@@ -30,16 +35,23 @@ const DataTable = ({ products }) => {
                 {filteredRow.map((item, i) => {
                   if (i === 0) return null;
                   if (typeof item === "number")
-                    return <TableCell align="center">{item}</TableCell>;
-                  else if (item === null)
-                    return <TableCell align="center">-</TableCell>;
-                  else if (item.startsWith("https"))
                     return (
-                      <TableCell align="center">
-                        <img src={item} height="80" alt=""/>
+                      <TableCell
+                        align="center"
+                        sx={{ maxWidth: 130, wordWrap: "break-word" }}
+                      >
+                        {item}
                       </TableCell>
                     );
-                  else return <TableCell>{item}</TableCell>;
+                  else if (item === null)
+                    return <TableCell align="center"   sx={{ maxWidth: 130, wordWrap: "break-word" }}>-</TableCell>;
+                  else if (item.startsWith("https"))
+                    return (
+                      <TableCell align="center"   sx={{ maxWidth: 130, wordWrap: "break-word" }}>
+                        <img src={item} height="80" alt="" />
+                      </TableCell>
+                    );
+                  else return <TableCell sx={{ maxWidth: 130, wordWrap: "break-word" }}>{item}</TableCell>;
                 })}
               </TableRow>
             );

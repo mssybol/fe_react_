@@ -15,7 +15,8 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import BusinessIcon from '@mui/icons-material/Business';
+import BusinessIcon from "@mui/icons-material/Business";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@mui/material";
 import { purple } from "@mui/material/colors";
@@ -92,13 +93,14 @@ const Drawer = styled(MuiDrawer, {
 
 const Home = () => {
   const { userInfo } = useSelector((state) => state.users);
-  const { products } = useSelector((state) => state.products);
+  const { products, currentCategory } = useSelector((state) => state.products);
 
   const dispatch = useDispatch();
 
   const { userLogout } = bindActionCreators(userActions, dispatch);
 
-  const { fetchProducts } = bindActionCreators(productActions, dispatch);
+  const { fetchProducts, selectCategory, removeFilterCategory } =
+    bindActionCreators(productActions, dispatch);
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
@@ -112,7 +114,7 @@ const Home = () => {
 
   const fetchCompanyNames = () => {
     const sellerCompanies = [];
-    for (let i = 0; i < products.length; i++) {
+    for (let i = 0; i < products?.length; i++) {
       const product = products[i];
 
       if (!sellerCompanies.includes(product.seller))
@@ -183,11 +185,26 @@ const Home = () => {
         </DrawerHeader>
         <Divider />
         <List>
-          {console.log(fetchCompanyNames())}
           {fetchCompanyNames().map((text) => (
-            <ListItem button key={text}>
-              <ListItemIcon> 
-                <BusinessIcon sx={{marginLeft : 1}}/>
+            <ListItem
+              button
+              key={text}
+              sx={{
+                backgroundColor: fetchCompanyNames().find(
+                  (item) => item === currentCategory
+                )
+                  ? "#F5F5F5"
+                  : "#FFF",
+              }}
+
+              onClick={() => selectCategory(text)}
+            >
+              <ListItemIcon >
+                <BusinessIcon
+                  sx={{
+                    marginLeft: 1,
+                  }}
+                />
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
@@ -197,7 +214,38 @@ const Home = () => {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        {products.length ? <DataTable products={products} /> : null}
+        {currentCategory ? (
+          <>
+            <Button
+              variant="outlined"
+              startIcon={<HighlightOffIcon />}
+              sx={{ marginBottom: 3 }}
+              onClick={removeFilterCategory}
+            >
+              Remove Filter
+            </Button>
+
+            <Typography variant="h6" sx={{ marginBottom: 3 }} component="div">
+              Current Category: {currentCategory}
+            </Typography>
+
+            <Divider sx={{ marginBottom: 3 }} />
+          </>
+        ) : (
+          <Typography variant="h6" sx={{ marginBottom: 3 }} component="div">
+            All products ({products.length}) are showing
+          </Typography>
+        )}
+
+        {products?.length ? (
+          <DataTable
+            products={
+              currentCategory
+                ? products.filter((item) => item.seller === currentCategory)
+                : products
+            }
+          />
+        ) : null}
       </Box>
     </Box>
   );
