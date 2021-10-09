@@ -15,8 +15,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import BusinessIcon from '@mui/icons-material/Business';
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@mui/material";
 import { purple } from "@mui/material/colors";
@@ -111,6 +110,18 @@ const Home = () => {
     setOpen(false);
   };
 
+  const fetchCompanyNames = () => {
+    const sellerCompanies = [];
+    for (let i = 0; i < products.length; i++) {
+      const product = products[i];
+
+      if (!sellerCompanies.includes(product.seller))
+        sellerCompanies.push(product.seller);
+    }
+
+    return sellerCompanies;
+  };
+
   const ColorButton = styled(Button)(({ theme }) => ({
     color: theme.palette.getContrastText(purple[500]),
     backgroundColor: purple[500],
@@ -121,7 +132,6 @@ const Home = () => {
 
   useEffect(() => {
     const getProducts = async () => await fetchProducts();
-
     getProducts();
   }, []);
 
@@ -173,10 +183,11 @@ const Home = () => {
         </DrawerHeader>
         <Divider />
         <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+          {console.log(fetchCompanyNames())}
+          {fetchCompanyNames().map((text) => (
             <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              <ListItemIcon> 
+                <BusinessIcon sx={{marginLeft : 1}}/>
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>

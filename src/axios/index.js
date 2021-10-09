@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API = axios.create({
   baseURL:
-    "https://cors-anywhere.herokuapp.com/https://bebolbol.herokuapp.com/",
+    "https://bebolbol.herokuapp.com/",
 });
 
 /* user actions */
