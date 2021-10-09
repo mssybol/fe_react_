@@ -18,12 +18,12 @@ import ListItemText from "@mui/material/ListItemText";
 import BusinessIcon from "@mui/icons-material/Business";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useDispatch, useSelector } from "react-redux";
-import { Badge, Button } from "@mui/material";
+import { Badge, Button,  LinearProgress } from "@mui/material";
 import { bindActionCreators } from "redux";
 import { productActions, userActions } from "../redux/actions";
 import { purple } from "@mui/material/colors";
 import DataTable from "../components/DataTable";
-import colors from "../Colors";
+import colors from "../colors/index";
 
 const drawerWidth = 240;
 
@@ -102,7 +102,9 @@ const Home = () => {
 
   const { fetchProducts, selectCategory, removeFilterCategory } =
     bindActionCreators(productActions, dispatch);
+
   const theme = useTheme();
+
   const [open, setOpen] = useState(false);
 
   const handleDrawerOpen = () => {
@@ -241,6 +243,7 @@ const Home = () => {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
+
         {currentCategory ? (
           <>
             <Box
@@ -275,9 +278,25 @@ const Home = () => {
             <Divider sx={{ marginBottom: 3 }} />
           </>
         ) : (
-          <Typography variant="h6" sx={{ marginBottom: 3 }} component="div">
-            All products ({products?.length}) are showing
-          </Typography>
+          <>
+            {products.length ? (
+              <Typography variant="h6" sx={{ marginBottom: 3 }} component="div">
+                All products ({products?.length}) are showing
+              </Typography>
+            ) : (
+              <>
+                <Typography
+                align="center"
+                  variant="h6"
+                  sx={{ marginBottom: 3  }}
+                  component="div"
+                >
+                  Data's Loading...
+                </Typography>
+                <LinearProgress />
+              </>
+            )}
+          </>
         )}
 
         {products?.length ? (
