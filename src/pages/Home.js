@@ -225,7 +225,7 @@ const Home = () => {
             </Button>
 
             <Typography variant="h6" sx={{ marginBottom: 3 }} component="div">
-              Current Category: {currentCategory}
+              Current Category: {currentCategory}({products?.filter((item) => item.seller === currentCategory).length})
             </Typography>
 
             <Divider sx={{ marginBottom: 3 }} />
