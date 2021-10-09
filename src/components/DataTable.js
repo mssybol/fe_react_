@@ -18,7 +18,7 @@ const DataTable = ({ products }) => {
             {objectKeys.map((item) => {
               if (item !== "price_history")
                 return (
-                  <TableCell align="center">
+                  <TableCell align="center" key={item}>
                     {item[0].toUpperCase() + item.substring(1)}
                   </TableCell>
                 );
@@ -38,6 +38,7 @@ const DataTable = ({ products }) => {
                       <TableCell
                         align="center"
                         sx={{ maxWidth: 130, wordWrap: "break-word" }}
+                        key={i}
                       >
                         {item}
                       </TableCell>
@@ -47,6 +48,7 @@ const DataTable = ({ products }) => {
                       <TableCell
                         align="center"
                         sx={{ maxWidth: 130, wordWrap: "break-word" }}
+                        key={i}
                       >
                         -
                       </TableCell>
@@ -56,13 +58,18 @@ const DataTable = ({ products }) => {
                       <TableCell
                         align="center"
                         sx={{ maxWidth: 130, wordWrap: "break-word" }}
+                        key={i}
                       >
                         <img src={item} height="80" alt="" />
                       </TableCell>
                     );
                   else
                     return (
-                      <TableCell align="center" sx={{ maxWidth: 130, wordWrap: "break-word" }}>
+                      <TableCell
+                        align="center"
+                        sx={{ maxWidth: 130, wordWrap: "break-word" }}
+                        key={i}
+                      >
                         {item}
                       </TableCell>
                     );

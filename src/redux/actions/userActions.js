@@ -5,8 +5,6 @@ export const userLogin = (userData) => async (dispatch) => {
   try {
     const result = await API.userLogin(userData);
 
-    console.log(result);
-
     dispatch({
       type: types.USER_LOGIN_SUCCESS,
       payload: result,

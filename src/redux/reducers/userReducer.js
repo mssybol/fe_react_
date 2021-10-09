@@ -11,6 +11,7 @@ const userReducer = (state = initialState, action) => {
         "X-Auth-Token",
         JSON.stringify(action.payload.data.key)
       );
+
       return {
         userInfo: action.payload.data,
       };

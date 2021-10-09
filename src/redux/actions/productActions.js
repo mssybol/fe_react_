@@ -5,7 +5,6 @@ export const fetchProducts = () => async (dispatch) => {
   try {
     const { data } = await API.fetchProducts();
 
-    console.log(data);
 
     dispatch({
       type: types.FETCH_PRODUCTS_SUCCESS,
