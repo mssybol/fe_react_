@@ -12,7 +12,7 @@ const DataTable = ({ products }) => {
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table>
         <TableHead>
           <TableRow>
             {objectKeys.map((item) => {
@@ -26,8 +26,7 @@ const DataTable = ({ products }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {products.map((row, i) => {
-
+          {products.map((row) => {
             let filteredRow = Object.values(row);
 
             return (
@@ -44,14 +43,29 @@ const DataTable = ({ products }) => {
                       </TableCell>
                     );
                   else if (item === null)
-                    return <TableCell align="center"   sx={{ maxWidth: 130, wordWrap: "break-word" }}>-</TableCell>;
+                    return (
+                      <TableCell
+                        align="center"
+                        sx={{ maxWidth: 130, wordWrap: "break-word" }}
+                      >
+                        -
+                      </TableCell>
+                    );
                   else if (item.startsWith("https"))
                     return (
-                      <TableCell align="center"   sx={{ maxWidth: 130, wordWrap: "break-word" }}>
+                      <TableCell
+                        align="center"
+                        sx={{ maxWidth: 130, wordWrap: "break-word" }}
+                      >
                         <img src={item} height="80" alt="" />
                       </TableCell>
                     );
-                  else return <TableCell sx={{ maxWidth: 130, wordWrap: "break-word" }}>{item}</TableCell>;
+                  else
+                    return (
+                      <TableCell align="center" sx={{ maxWidth: 130, wordWrap: "break-word" }}>
+                        {item}
+                      </TableCell>
+                    );
                 })}
               </TableRow>
             );

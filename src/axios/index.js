@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL:
-    "https://bebolbol.herokuapp.com/",
+  baseURL: "https://bebolbol.herokuapp.com/",
 });
 
 /* user actions */

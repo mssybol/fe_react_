@@ -196,10 +196,9 @@ const Home = () => {
                   ? "#F5F5F5"
                   : "#FFF",
               }}
-
               onClick={() => selectCategory(text)}
             >
-              <ListItemIcon >
+              <ListItemIcon>
                 <BusinessIcon
                   sx={{
                     marginLeft: 1,
@@ -233,7 +232,7 @@ const Home = () => {
           </>
         ) : (
           <Typography variant="h6" sx={{ marginBottom: 3 }} component="div">
-            All products ({products.length}) are showing
+            All products ({products?.length}) are showing
           </Typography>
         )}
 
@@ -241,7 +240,7 @@ const Home = () => {
           <DataTable
             products={
               currentCategory
-                ? products.filter((item) => item.seller === currentCategory)
+                ? products?.filter((item) => item.seller === currentCategory)
                 : products
             }
           />

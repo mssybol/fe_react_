@@ -3,16 +3,12 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import {
-  FilledInput,
   FormControl,
   IconButton,
   InputAdornment,
@@ -20,9 +16,10 @@ import {
   OutlinedInput,
 } from "@mui/material";
 import { AccountCircle, Visibility, VisibilityOff } from "@mui/icons-material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { userActions } from "../redux/actions";
+import Message from "./Message";
 
 const Copyright = (props) => {
   return (
@@ -44,6 +41,8 @@ const Copyright = (props) => {
 
 const Login = () => {
   const dispatch = useDispatch();
+
+  const { error } = useSelector((state) => state.users);
   const { userLogin } = bindActionCreators(userActions, dispatch);
 
   const [values, setValues] = useState({
@@ -74,7 +73,7 @@ const Login = () => {
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" sx={{ mb: 1 }}>
           Sign in
         </Typography>
         <Box
@@ -84,7 +83,9 @@ const Login = () => {
           sx={{ mt: 1 }}
           autoComplete="off"
         >
+          {error ? <Message>{error}</Message> : null}
           <TextField
+            sx={{ mt: 3 }}
             value={values.username}
             onChange={(e) => setValues({ ...values, username: e.target.value })}
             margin="normal"
@@ -125,10 +126,6 @@ const Login = () => {
             />
           </FormControl>
 
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
           <Button
             type="submit"
             fullWidth
