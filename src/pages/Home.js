@@ -18,11 +18,12 @@ import ListItemText from "@mui/material/ListItemText";
 import BusinessIcon from "@mui/icons-material/Business";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useDispatch, useSelector } from "react-redux";
-import { Button } from "@mui/material";
-import { purple } from "@mui/material/colors";
+import { Badge, Button } from "@mui/material";
 import { bindActionCreators } from "redux";
 import { productActions, userActions } from "../redux/actions";
+import { purple } from "@mui/material/colors";
 import DataTable from "../components/DataTable";
+import colors from "../Colors";
 
 const drawerWidth = 240;
 
@@ -135,7 +136,7 @@ const Home = () => {
   useEffect(() => {
     const getProducts = async () => await fetchProducts();
     getProducts();
-  }, []);
+  }, [fetchProducts]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -163,7 +164,6 @@ const Home = () => {
             }}
           >
             <Typography variant="h6" noWrap component="div">
-              {/* userName */}
               {userInfo?.user.first_name} - {userInfo?.user.last_name}
             </Typography>
 
@@ -183,9 +183,26 @@ const Home = () => {
             )}
           </IconButton>
         </DrawerHeader>
+        <Typography
+          variant="p"
+          align="center"
+          sx={{ marginTop: 3, marginBottom: 3, fontSize: 18 }}
+        >
+          {open ? (
+            `Companies (${fetchCompanyNames().length})`
+          ) : (
+            <Badge
+              color="secondary"
+              badgeContent={fetchCompanyNames().length}
+              showZero
+            >
+              <BusinessIcon />
+            </Badge>
+          )}
+        </Typography>
         <Divider />
         <List>
-          {fetchCompanyNames().map((text) => (
+          {fetchCompanyNames().map((text, i) => (
             <ListItem
               button
               key={text}
@@ -199,11 +216,22 @@ const Home = () => {
               onClick={() => selectCategory(text)}
             >
               <ListItemIcon>
-                <BusinessIcon
+                <Box
+                  component="span"
                   sx={{
-                    marginLeft: 1,
+                    borderRadius: "50%",
+                    backgroundColor: colors[i],
+                    width: 40,
+                    height: 40,
                   }}
-                />
+                >
+                  <Typography
+                    align="center"
+                    sx={{ marginTop: 1, color: "white" }}
+                  >
+                    {text[0].toUpperCase()}
+                  </Typography>
+                </Box>
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
@@ -215,18 +243,34 @@ const Home = () => {
         <DrawerHeader />
         {currentCategory ? (
           <>
-            <Button
-              variant="outlined"
-              startIcon={<HighlightOffIcon />}
-              sx={{ marginBottom: 3 }}
-              onClick={removeFilterCategory}
+            <Box
+              sx={{ display: "flex", alignItems: "center", marginBottom: 3 }}
             >
-              Remove Filter
-            </Button>
+              <Button
+                variant="outlined"
+                startIcon={<HighlightOffIcon />}
+                onClick={removeFilterCategory}
+              >
+                Remove Filter
+              </Button>
 
-            <Typography variant="h6" sx={{ marginBottom: 3 }} component="div">
-              Current Category: {currentCategory}({products?.filter((item) => item.seller === currentCategory).length})
-            </Typography>
+              <Typography variant="p" component="div" sx={{ marginLeft: 1 }}>
+                Current Category: {currentCategory}
+                <Badge
+                  sx={{ marginLeft: 3 }}
+                  badgeContent={
+                    products?.filter((item) => item.seller === currentCategory)
+                      .length
+                  }
+                  max={
+                    products?.filter((item) => item.seller === currentCategory)
+                      .length
+                  }
+                  color="secondary"
+                ></Badge>
+                )
+              </Typography>
+            </Box>
 
             <Divider sx={{ marginBottom: 3 }} />
           </>
