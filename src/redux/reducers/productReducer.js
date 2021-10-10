@@ -33,6 +33,9 @@ const productReducer = (state = initialState, action) => {
         currentCategory: null,
       };
 
+    case types.USER_LOGOUT:
+      return initialState;
+
     default:
       return state;
   }

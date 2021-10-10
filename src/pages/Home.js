@@ -138,7 +138,7 @@ const Home = () => {
   useEffect(() => {
     const getProducts = async () => await fetchProducts();
     getProducts();
-  }, [fetchProducts]);
+  }, []);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -279,7 +279,7 @@ const Home = () => {
           </>
         ) : (
           <>
-            {products.length ? (
+            {products?.length ? (
               <Typography variant="h6" sx={{ marginBottom: 3 }} component="div">
                 All products ({products?.length}) are showing
               </Typography>

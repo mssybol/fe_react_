@@ -23,16 +23,22 @@ const DataTable = ({ products }) => {
 
   const objectKeys = Object.keys(products[0]);
 
-  const tableWidth = "92vw";
+  console.log(products);
 
   return (
-    <Paper sx={{ width: tableWidth, overflow: "hidden" }}>
-      <TableContainer sx={{ height: "72vh", width: tableWidth }}>
-        <Table stickyHeader sx={{ width: tableWidth }}>
+    <Paper sx={{ overflow: "hidden", maxWidth: "1395px" }}>
+      <TableContainer sx={{ maxHeight: "72vh" }}>
+        <Table stickyHeader>
           <TableHead>
             <TableRow>
+              <TableCell align="center">No</TableCell>
+
               {objectKeys.map((item) => {
-                if (item !== "price_history")
+                if (
+                  item !== "price_history" &&
+                  item !== "last_updated" &&
+                  item !== "created_date"
+                )
                   return (
                     <TableCell align="center" key={item}>
                       {item[0].toUpperCase() + item.substring(1)}
@@ -45,18 +51,24 @@ const DataTable = ({ products }) => {
           <TableBody>
             {products
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
+              .map((row, index) => {
                 let filteredRow = Object.values(row);
 
                 return (
                   <TableRow key={row.id} role="checkbox" tabIndex={-1}>
+                    <TableCell
+                      align="center"
+                      sx={{ wordWrap: "break-word", maxWidth: 100 }}
+                    >
+                      {index}
+                    </TableCell>
                     {filteredRow.map((item, i) => {
-                      if (i === 0) return null;
+                      if (i === 0 || i === 15 || i === 16) return null;
                       if (typeof item === "number")
                         return (
                           <TableCell
                             align="center"
-                            sx={{ maxWidth: 130, wordWrap: "break-word" }}
+                            sx={{ wordWrap: "break-word", maxWidth: 100 }}
                             key={i}
                           >
                             {item}
@@ -66,7 +78,7 @@ const DataTable = ({ products }) => {
                         return (
                           <TableCell
                             align="center"
-                            sx={{ maxWidth: 130, wordWrap: "break-word" }}
+                            sx={{ wordWrap: "break-word", maxWidth: 100 }}
                             key={i}
                           >
                             -
@@ -76,7 +88,7 @@ const DataTable = ({ products }) => {
                         return (
                           <TableCell
                             align="center"
-                            sx={{ maxWidth: 130, wordWrap: "break-word" }}
+                            sx={{ wordWrap: "break-word", maxWidth: 100 }}
                             key={i}
                           >
                             <img src={item} height="80" alt="" />
@@ -86,7 +98,7 @@ const DataTable = ({ products }) => {
                         return (
                           <TableCell
                             align="center"
-                            sx={{ maxWidth: 130, wordWrap: "break-word" }}
+                            sx={{ wordWrap: "break-word", maxWidth: 100 }}
                             key={i}
                           >
                             {item}
@@ -102,7 +114,7 @@ const DataTable = ({ products }) => {
       <TablePagination
         rowsPerPageOptions={[25, 50, 100]}
         component="div"
-        count={products.length}
+        count={products?.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
