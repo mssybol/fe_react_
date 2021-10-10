@@ -6,11 +6,33 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { TablePagination } from "@mui/material";
+import { Modal, TablePagination, Box } from "@mui/material";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "auto",
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 const DataTable = ({ products }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
+
+  const [open, setOpen] = React.useState(false);
+
+  const [url, setUrl] = useState("");
+
+  const handleOpen = (urlProps) => {
+    setOpen(true);
+    setUrl(urlProps);
+  };
+  const handleClose = () => setOpen(false);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -23,10 +45,9 @@ const DataTable = ({ products }) => {
 
   const objectKeys = Object.keys(products[0]);
 
-  console.log(products);
 
   return (
-    <Paper sx={{ overflow: "hidden", maxWidth: "1395px" }}>
+    <Paper sx={{ overflow: "hidden" }}>
       <TableContainer sx={{ maxHeight: "72vh" }}>
         <Table stickyHeader>
           <TableHead>
@@ -34,7 +55,13 @@ const DataTable = ({ products }) => {
               <TableCell align="center">No</TableCell>
 
               {objectKeys.map((item) => {
-                if (
+                if (item === "ratingValue" || item === "price") {
+                  return (
+                    <TableCell align="center">
+                      {item[0].toUpperCase() + item.substring(1)}
+                    </TableCell>
+                  );
+                } else if (
                   item !== "price_history" &&
                   item !== "last_updated" &&
                   item !== "created_date"
@@ -60,10 +87,26 @@ const DataTable = ({ products }) => {
                       align="center"
                       sx={{ wordWrap: "break-word", maxWidth: 100 }}
                     >
-                      {index}
+                      {index + 1 + page * rowsPerPage}
                     </TableCell>
                     {filteredRow.map((item, i) => {
                       if (i === 0 || i === 15 || i === 16) return null;
+                      else if (i === 9)
+                      return (
+                        <TableCell
+                          align="center"
+                          sx={{
+                            wordWrap: "break-word",
+                            maxWidth: 100,
+                            cursor: "pointer",
+                          }}
+                          key={i}
+                          onClick={() => handleOpen(item)}
+                        >
+                          <img src={item} height="80" alt="" />
+                        </TableCell>
+                      );
+                      
                       if (typeof item === "number")
                         return (
                           <TableCell
@@ -84,16 +127,7 @@ const DataTable = ({ products }) => {
                             -
                           </TableCell>
                         );
-                      else if (item.startsWith("https"))
-                        return (
-                          <TableCell
-                            align="center"
-                            sx={{ wordWrap: "break-word", maxWidth: 100 }}
-                            key={i}
-                          >
-                            <img src={item} height="80" alt="" />
-                          </TableCell>
-                        );
+                     
                       else
                         return (
                           <TableCell
@@ -120,6 +154,11 @@ const DataTable = ({ products }) => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      <Modal open={open} onClose={handleClose}>
+        <Box sx={style}>
+          <img src={url} alt="" height="400" />
+        </Box>
+      </Modal>
     </Paper>
   );
 };

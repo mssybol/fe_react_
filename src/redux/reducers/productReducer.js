@@ -26,13 +26,7 @@ const productReducer = (state = initialState, action) => {
         currentCategory: action.payload,
       };
 
-    case types.REMOVE_FILTER_CATEGORY:
-      return {
-        ...state,
-        error: null,
-        currentCategory: null,
-      };
-
+  
     case types.USER_LOGOUT:
       return initialState;
 

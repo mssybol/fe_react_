@@ -25,8 +25,3 @@ export const selectCategory = (categoryName) => (dispatch) => {
   });
 };
 
-export const removeFilterCategory = () => (dispatch) => {
-  dispatch({
-    type: types.REMOVE_FILTER_CATEGORY,
-  });
-};

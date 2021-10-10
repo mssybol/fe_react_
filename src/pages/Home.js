@@ -16,9 +16,8 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import BusinessIcon from "@mui/icons-material/Business";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useDispatch, useSelector } from "react-redux";
-import { Badge, Button,  LinearProgress } from "@mui/material";
+import { Badge, Button, LinearProgress } from "@mui/material";
 import { bindActionCreators } from "redux";
 import { productActions, userActions } from "../redux/actions";
 import { purple } from "@mui/material/colors";
@@ -100,8 +99,10 @@ const Home = () => {
 
   const { userLogout } = bindActionCreators(userActions, dispatch);
 
-  const { fetchProducts, selectCategory, removeFilterCategory } =
-    bindActionCreators(productActions, dispatch);
+  const { fetchProducts, selectCategory } = bindActionCreators(
+    productActions,
+    dispatch
+  );
 
   const theme = useTheme();
 
@@ -246,19 +247,9 @@ const Home = () => {
 
         {currentCategory ? (
           <>
-            <Box
-              sx={{ display: "flex", alignItems: "center", marginBottom: 3 }}
-            >
-              <Button
-                variant="outlined"
-                startIcon={<HighlightOffIcon />}
-                onClick={removeFilterCategory}
-              >
-                Remove Filter
-              </Button>
-
-              <Typography variant="p" component="div" sx={{ marginLeft: 1 }}>
-                Current Category: {currentCategory}
+            <Box>
+              <Typography variant="h5" component="div" >
+                {currentCategory}
                 <Badge
                   sx={{ marginLeft: 3 }}
                   badgeContent={
@@ -271,11 +262,10 @@ const Home = () => {
                   }
                   color="secondary"
                 ></Badge>
-                )
               </Typography>
             </Box>
 
-            <Divider sx={{ marginBottom: 3 }} />
+            <Divider sx={{ marginBottom: 3, marginTop: 3 }} />
           </>
         ) : (
           <>
@@ -286,9 +276,9 @@ const Home = () => {
             ) : (
               <>
                 <Typography
-                align="center"
+                  align="center"
                   variant="h6"
-                  sx={{ marginBottom: 3  }}
+                  sx={{ marginBottom: 3 }}
                   component="div"
                 >
                   Data's Loading...
