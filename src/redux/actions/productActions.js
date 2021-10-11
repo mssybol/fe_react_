@@ -4,11 +4,13 @@ import * as types from "../types";
 export const fetchProducts = () => async (dispatch) => {
   try {
     const { data } = await API.fetchProducts();
+    console.log("🚀 ~ file: productActions.js ~ line 7 ~ fetchProducts ~ data", data)
+    console.log("🚀 ~ file: productActions.js ~ line 14 ~ fetchProducts ~ data?.results", data?.results)
 
 
     dispatch({
       type: types.FETCH_PRODUCTS_SUCCESS,
-      payload: data,
+      payload: data?.results || [],
     });
   } catch (error) {
     dispatch({

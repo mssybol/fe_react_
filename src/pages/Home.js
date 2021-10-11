@@ -137,8 +137,7 @@ const Home = () => {
   }));
 
   useEffect(() => {
-    const getProducts = async () => await fetchProducts();
-    getProducts();
+    fetchProducts();
   }, []);
 
   return (
@@ -248,7 +247,7 @@ const Home = () => {
         {currentCategory ? (
           <>
             <Box>
-              <Typography variant="h5" component="div" >
+              <Typography variant="h5" component="div">
                 {currentCategory}
                 <Badge
                   sx={{ marginLeft: 3 }}
@@ -289,15 +288,7 @@ const Home = () => {
           </>
         )}
 
-        {products?.length ? (
-          <DataTable
-            products={
-              currentCategory
-                ? products?.filter((item) => item.seller === currentCategory)
-                : products
-            }
-          />
-        ) : null}
+        {products?.length ? <DataTable products={products} /> : null}
       </Box>
     </Box>
   );

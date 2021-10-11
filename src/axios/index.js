@@ -12,4 +12,4 @@ export const userLogin = async (userData) =>
 /* data actions */
 
 export const fetchProducts = async () =>
-  await API.get("kruidvat/kruidvatInventoryV/");
+  await API.get("kruidvat/kruidvatInventory/");
