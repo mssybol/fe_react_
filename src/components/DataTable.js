@@ -6,7 +6,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Modal, TablePagination, Box } from "@mui/material";
+import { Modal, Box, IconButton } from "@mui/material";
+import {  useSelector } from "react-redux";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 const style = {
   position: "absolute",
@@ -20,13 +23,9 @@ const style = {
   p: 4,
 };
 
-const DataTable = ({ products }) => {
-  console.log(
-    "🚀 ~ file: DataTable.js ~ line 24 ~ DataTable ~ products",
-    products
-  );
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(25);
+const DataTable = () => {
+  const { products } = useSelector((state) => state.products);
+  
 
   const [open, setOpen] = React.useState(false);
 
@@ -38,16 +37,26 @@ const DataTable = ({ products }) => {
   };
   const handleClose = () => setOpen(false);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  const headerRows = [
+    "No",
+    "Id",
+    "Image",
+    "Ean",
+    "Brand",
+    "Title",
+    "Subtitle",
+    "Description",
+    "Price",
+    "Mpn",
+    "Sku",
+    "RatingValue",
+    "ReviewCount",
+    "Seller",
+  ];
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  const leftIconHandler = () => {};
 
-  const objectKeys = Object.keys(products[0]);
+  const rightIconHandler = () => {};
 
   return (
     <Paper sx={{ overflow: "hidden" }}>
@@ -55,57 +64,70 @@ const DataTable = ({ products }) => {
         <Table stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell>No</TableCell> {/* duzenlenecek */}
-              <TableCell>Id</TableCell>
-              <TableCell>Image</TableCell>
-              <TableCell>Ean</TableCell>
-              <TableCell>Brand</TableCell>
-              <TableCell>Title</TableCell>
-              <TableCell>Subtitle</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Price</TableCell>
-              <TableCell>Mpn</TableCell>
-              <TableCell>Sku</TableCell>
-              <TableCell>RatingValue</TableCell>
-              <TableCell>ReviewCount</TableCell>
-              <TableCell>Seller</TableCell>
+              {headerRows.map((item) => (
+                <TableCell component="tr" align="center" key={item}>
+                  {item}
+                </TableCell>
+              ))}
+              {/* <TableCell align="center">Id</TableCell>
+              <TableCell align="center">Image</TableCell>
+              <TableCell align="center">Ean</TableCell>
+              <TableCell align="center">Brand</TableCell>
+              <TableCell align="center">Title</TableCell>
+              <TableCell align="center">Subtitle</TableCell>
+              <TableCell align="center">Description</TableCell>
+              <TableCell align="center">Price</TableCell>
+              <TableCell align="center">Mpn</TableCell>
+              <TableCell align="center">Sku</TableCell>
+              <TableCell align="center">RatingValue</TableCell>
+              <TableCell align="center">ReviewCount</TableCell>
+              <TableCell align="center">ReviewCount</TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
             {products.map((row, index) => (
-              <TableRow key={row.id} role="checkbox" tabIndex={-1}>
-                <TableCell>{index + 1}</TableCell> {/* duzenlenecek */}
-                <TableCell>
+              <TableRow key={row.id} tabIndex={-1}>
+                <TableCell align="center">{index + 1}</TableCell>
+                {/* duzenlenecek */}
+                <TableCell align="center">
                   <a href={row.url}> {row.id} </a>
                 </TableCell>
-                <TableCell onClick={() => handleOpen(row.image)}>
+                <TableCell
+                  align="center"
+                  onClick={() => handleOpen(row.image)}
+                  sx={{ cursor: "pointer" }}
+                >
                   <img src={row.image} height="80" alt="" />
                 </TableCell>
-                <TableCell>{row.ean}</TableCell>
-                <TableCell>{row.brand}</TableCell>
-                <TableCell>{row.title}</TableCell>
-                <TableCell>{row.subtitle}</TableCell>
-                <TableCell>{row.description}</TableCell>
-                <TableCell>{`${row.price}${row.priceCurrency}`}</TableCell>
-                <TableCell>{row.mpn}</TableCell>
-                <TableCell>{row.sku}</TableCell>
-                <TableCell>{row.ratingValue}</TableCell>
-                <TableCell>{row.reviewCount}</TableCell>
-                <TableCell>{row.seller}</TableCell>
+                <TableCell align="center">{row.ean}</TableCell>
+                <TableCell align="center">{row.brand}</TableCell>
+                <TableCell align="center">{row.title}</TableCell>
+                <TableCell align="center">{row.subtitle}</TableCell>
+                <TableCell align="center">{row.description}</TableCell>
+                <TableCell align="center">{`${row.price} ${row.priceCurrency}`}</TableCell>
+                <TableCell align="center">{row.mpn}</TableCell>
+                <TableCell align="center">{row.sku}</TableCell>
+                <TableCell align="center">{row.ratingValue}</TableCell>
+                <TableCell align="center">{row.reviewCount}</TableCell>
+                <TableCell align="center">{row.seller}</TableCell>
               </TableRow>
             ))}
+
+            <TableRow>
+              <TableCell sx={{ display: "flex" }}>
+                <IconButton color="secondary" onClick={leftIconHandler}>
+                  <ChevronLeftIcon />
+                </IconButton>
+
+                <IconButton color="secondary" onClick={rightIconHandler}>
+                  <ChevronRightIcon />
+                </IconButton>
+              </TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[25, 50, 100]}
-        component="div"
-        count={products?.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
           <img src={url} alt="" height="400" />

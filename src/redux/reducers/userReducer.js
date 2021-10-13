@@ -8,8 +8,11 @@ const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.USER_LOGIN_SUCCESS:
       localStorage.setItem(
-        "X-Auth-Token",
-        JSON.stringify(action.payload.data.key)
+        "authorization",
+        JSON.stringify({
+          isLogin: true,
+          token: action.payload.data.key,
+        })
       );
 
       return {
@@ -22,7 +25,13 @@ const userReducer = (state = initialState, action) => {
       };
 
     case types.USER_LOGOUT:
-      localStorage.removeItem("X-Auth-Token");
+      localStorage.setItem(
+        "authorization",
+        JSON.stringify({
+          isLogin: false,
+          token: null,
+        })
+      );
 
       return initialState;
 

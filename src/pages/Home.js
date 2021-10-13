@@ -288,7 +288,7 @@ const Home = () => {
           </>
         )}
 
-        {products?.length ? <DataTable products={products} /> : null}
+        {products?.length ? <DataTable /> : null}
       </Box>
     </Box>
   );
