@@ -3,6 +3,9 @@ import * as types from "../types";
 const initialState = {
   products: [],
   currentCategory: null,
+  nextUrl: null,
+  previousUrl: null,
+  totalNumberOfProducts: 0,
 };
 
 const productReducer = (state = initialState, action) => {
@@ -11,7 +14,12 @@ const productReducer = (state = initialState, action) => {
       return {
         ...state,
         error: null,
-        products: action.payload,
+        nextUrl: action.payload?.next.slice(31),
+        previousUrl: action.payload?.previous
+          ? action.payload?.previous?.slice(31)
+          : null,
+        totalNumberOfProducts: action.payload?.count,
+        products: action.payload?.results,
       };
 
     case types.USER_LOGIN_FAIL:
@@ -26,7 +34,6 @@ const productReducer = (state = initialState, action) => {
         currentCategory: action.payload,
       };
 
-  
     case types.USER_LOGOUT:
       return initialState;
 

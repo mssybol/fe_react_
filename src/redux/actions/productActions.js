@@ -2,10 +2,12 @@ import * as API from "../../axios/index";
 import * as types from "../types";
 
 export const fetchProducts =
-  (limit = 25, offset = 0) =>
+  (
+    url = "https://bebolbol.herokuapp.com/kruidvat/kruidvatInventory/?limit=25&offset=0"
+  ) =>
   async (dispatch) => {
     try {
-      const { data } = await API.fetchProducts(limit, offset);
+      const { data } = await API.fetchProducts(url);
       console.log(
         "🚀 ~ file: productActions.js ~ line 7 ~ fetchProducts ~ data",
         data
@@ -17,7 +19,7 @@ export const fetchProducts =
 
       dispatch({
         type: types.FETCH_PRODUCTS_SUCCESS,
-        payload: data?.results || [],
+        payload: data,
       });
     } catch (error) {
       dispatch({

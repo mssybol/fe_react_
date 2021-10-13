@@ -16,9 +16,11 @@ API.interceptors.request.use((req) => {
 /* user actions */
 
 export const userLogin = async (userData) =>
-  await API.post("accounts/auth/login/", userData);
+  await axios.post(
+    "https://bebolbol.herokuapp.com/accounts/auth/login/",
+    userData
+  );
 
 /* data actions */
 
-export const fetchProducts = async (limit , offset) =>
-  await API.get(`kruidvat/kruidvatInventory/?limit=${limit}&offset=${offset}`);
+export const fetchProducts = async (url) => await API.get(url);

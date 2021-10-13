@@ -92,8 +92,10 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const Home = () => {
+
   const { userInfo } = useSelector((state) => state.users);
-  const { products, currentCategory } = useSelector((state) => state.products);
+
+  const { products, currentCategory , totalNumberOfProducts} = useSelector((state) => state.products);
 
   const dispatch = useDispatch();
 
@@ -268,9 +270,9 @@ const Home = () => {
           </>
         ) : (
           <>
-            {products?.length ? (
+            {totalNumberOfProducts ? (
               <Typography variant="h6" sx={{ marginBottom: 3 }} component="div">
-                All products ({products?.length}) are showing
+                All products ({totalNumberOfProducts}) are showing
               </Typography>
             ) : (
               <>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,9 +7,11 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Modal, Box, IconButton } from "@mui/material";
-import {  useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { bindActionCreators } from "redux";
+import { productActions } from "../redux/actions";
 
 const style = {
   position: "absolute",
@@ -24,8 +26,13 @@ const style = {
 };
 
 const DataTable = () => {
-  const { products } = useSelector((state) => state.products);
-  
+  const { products, nextUrl, previousUrl } = useSelector(
+    (state) => state.products
+  );
+
+  const [page, setPage] = useState(0);
+
+  const tableRef = React.createRef();
 
   const [open, setOpen] = React.useState(false);
 
@@ -36,6 +43,10 @@ const DataTable = () => {
     setUrl(urlProps);
   };
   const handleClose = () => setOpen(false);
+
+  const dispatch = useDispatch();
+
+  const { fetchProducts } = bindActionCreators(productActions, dispatch);
 
   const headerRows = [
     "No",
@@ -54,41 +65,37 @@ const DataTable = () => {
     "Seller",
   ];
 
-  const leftIconHandler = () => {};
+  const leftIconHandler = () => {
+    setPage(page - 1);
+    fetchProducts(previousUrl);
+  };
 
-  const rightIconHandler = () => {};
+  const rightIconHandler = () => {
+    setPage(page + 1);
+    fetchProducts(nextUrl);
+    tableRef.current.scrollTop = 0;
+  };
 
   return (
     <Paper sx={{ overflow: "hidden" }}>
-      <TableContainer sx={{ maxHeight: "72vh" }}>
+      <TableContainer
+        sx={{ maxHeight: "72vh", scrollBehavior: "smooth" }}
+        ref={tableRef}
+      >
         <Table stickyHeader>
           <TableHead>
             <TableRow>
               {headerRows.map((item) => (
-                <TableCell component="tr" align="center" key={item}>
+                <TableCell align="center" key={item}>
                   {item}
                 </TableCell>
               ))}
-              {/* <TableCell align="center">Id</TableCell>
-              <TableCell align="center">Image</TableCell>
-              <TableCell align="center">Ean</TableCell>
-              <TableCell align="center">Brand</TableCell>
-              <TableCell align="center">Title</TableCell>
-              <TableCell align="center">Subtitle</TableCell>
-              <TableCell align="center">Description</TableCell>
-              <TableCell align="center">Price</TableCell>
-              <TableCell align="center">Mpn</TableCell>
-              <TableCell align="center">Sku</TableCell>
-              <TableCell align="center">RatingValue</TableCell>
-              <TableCell align="center">ReviewCount</TableCell>
-              <TableCell align="center">ReviewCount</TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
             {products.map((row, index) => (
               <TableRow key={row.id} tabIndex={-1}>
-                <TableCell align="center">{index + 1}</TableCell>
-                {/* duzenlenecek */}
+                <TableCell align="center">{page * 25 + index + 1}</TableCell>
                 <TableCell align="center">
                   <a href={row.url}> {row.id} </a>
                 </TableCell>
@@ -112,21 +119,30 @@ const DataTable = () => {
                 <TableCell align="center">{row.seller}</TableCell>
               </TableRow>
             ))}
-
-            <TableRow>
-              <TableCell sx={{ display: "flex" }}>
-                <IconButton color="secondary" onClick={leftIconHandler}>
-                  <ChevronLeftIcon />
-                </IconButton>
-
-                <IconButton color="secondary" onClick={rightIconHandler}>
-                  <ChevronRightIcon />
-                </IconButton>
-              </TableCell>
-            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
+
+      <Box
+        component="div"
+        sx={{ padding: 2, display: "flex", justifyContent: "flex-end" }}
+      >
+        <IconButton
+          color="secondary"
+          onClick={leftIconHandler}
+          disabled={previousUrl && page !== 0 ? false : true}
+        >
+          <ChevronLeftIcon />
+        </IconButton>
+
+        <IconButton
+          color="secondary"
+          onClick={rightIconHandler}
+          disabled={nextUrl ? false : true}
+        >
+          <ChevronRightIcon />
+        </IconButton>
+      </Box>
 
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
