@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, {  createRef, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -32,9 +32,9 @@ const DataTable = () => {
 
   const [page, setPage] = useState(0);
 
-  const tableRef = React.createRef();
+  const tableRef = createRef();
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const [url, setUrl] = useState("");
 
@@ -68,6 +68,7 @@ const DataTable = () => {
   const leftIconHandler = () => {
     setPage(page - 1);
     fetchProducts(previousUrl);
+    tableRef.current.scrollTop = 0;
   };
 
   const rightIconHandler = () => {

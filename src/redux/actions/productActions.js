@@ -8,14 +8,6 @@ export const fetchProducts =
   async (dispatch) => {
     try {
       const { data } = await API.fetchProducts(url);
-      console.log(
-        "🚀 ~ file: productActions.js ~ line 7 ~ fetchProducts ~ data",
-        data
-      );
-      console.log(
-        "🚀 ~ file: productActions.js ~ line 14 ~ fetchProducts ~ data?.results",
-        data?.results
-      );
 
       dispatch({
         type: types.FETCH_PRODUCTS_SUCCESS,
