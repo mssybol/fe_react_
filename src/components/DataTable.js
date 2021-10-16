@@ -1,4 +1,4 @@
-import React, {  createRef, useState } from "react";
+import React, { createRef, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -6,10 +6,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Modal, Box, IconButton } from "@mui/material";
+import { Modal, Box, TablePagination } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { bindActionCreators } from "redux";
 import { productActions } from "../redux/actions";
 
@@ -26,11 +24,9 @@ const style = {
 };
 
 const DataTable = () => {
-  const { products, nextUrl, previousUrl } = useSelector(
+  const { products, nextUrl, previousUrl, totalNumberOfProducts } = useSelector(
     (state) => state.products
   );
-
-  const [page, setPage] = useState(0);
 
   const tableRef = createRef();
 
@@ -45,6 +41,19 @@ const DataTable = () => {
   const handleClose = () => setOpen(false);
 
   const dispatch = useDispatch();
+
+  const [page, setPage] = useState(0);
+
+  const [rowsPerPage, setRowsPerPage] = useState(25);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
 
   const { fetchProducts } = bindActionCreators(productActions, dispatch);
 
@@ -98,7 +107,12 @@ const DataTable = () => {
               <TableRow key={row.id} tabIndex={-1}>
                 <TableCell align="center">{page * 25 + index + 1}</TableCell>
                 <TableCell align="center">
-                  <a href={row.url}> {row.id} </a>
+                  <a
+                    href={row.url}
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    {row.id}
+                  </a>
                 </TableCell>
                 <TableCell
                   align="center"
@@ -124,26 +138,23 @@ const DataTable = () => {
         </Table>
       </TableContainer>
 
-      <Box
+      <TablePagination
+        rowsPerPageOptions={[25]}
         component="div"
-        sx={{ padding: 2, display: "flex", justifyContent: "flex-end" }}
-      >
-        <IconButton
-          color="secondary"
-          onClick={leftIconHandler}
-          disabled={previousUrl && page !== 0 ? false : true}
-        >
-          <ChevronLeftIcon />
-        </IconButton>
-
-        <IconButton
-          color="secondary"
-          onClick={rightIconHandler}
-          disabled={nextUrl ? false : true}
-        >
-          <ChevronRightIcon />
-        </IconButton>
-      </Box>
+        count={totalNumberOfProducts}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        backIconButtonProps={{
+          "aria-label": "Previous Page",
+          onClick: leftIconHandler,
+        }}
+        nextIconButtonProps={{
+          "aria-label": "Next Page",
+          onClick: rightIconHandler,
+        }}
+      />
 
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
