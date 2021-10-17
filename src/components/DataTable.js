@@ -1,12 +1,18 @@
 import React, { createRef, useState } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { Modal, Box, TablePagination } from "@mui/material";
+import {
+  Modal,
+  Box,
+  TablePagination,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
+import LinkIcon from "@mui/icons-material/Link";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { productActions } from "../redux/actions";
@@ -21,6 +27,7 @@ const style = {
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
+  borderRadius: 5,
 };
 
 const DataTable = () => {
@@ -28,27 +35,22 @@ const DataTable = () => {
     (state) => state.products
   );
 
+  const dispatch = useDispatch();
   const tableRef = createRef();
 
   const [open, setOpen] = useState(false);
-
   const [url, setUrl] = useState("");
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
 
   const handleOpen = (urlProps) => {
     setOpen(true);
     setUrl(urlProps);
   };
+
   const handleClose = () => setOpen(false);
 
-  const dispatch = useDispatch();
-
-  const [page, setPage] = useState(0);
-
-  const [rowsPerPage, setRowsPerPage] = useState(25);
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  const handleChangePage = (event, newPage) => setPage(newPage);
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
@@ -58,6 +60,7 @@ const DataTable = () => {
   const { fetchProducts } = bindActionCreators(productActions, dispatch);
 
   const headerRows = [
+    "Url",
     "No",
     "Id",
     "Image",
@@ -105,15 +108,13 @@ const DataTable = () => {
           <TableBody>
             {products.map((row, index) => (
               <TableRow key={row.id} tabIndex={-1}>
-                <TableCell align="center">{page * 25 + index + 1}</TableCell>
                 <TableCell align="center">
-                  <a
-                    href={row.url}
-                    style={{ textDecoration: "none", color: "black" }}
-                  >
-                    {row.id}
-                  </a>
+                  <IconButton href={row.url} target="_blank">
+                    <LinkIcon />
+                  </IconButton>
                 </TableCell>
+                <TableCell align="center">{page * 25 + index + 1}</TableCell>
+                <TableCell align="center">{row.id}</TableCell>
                 <TableCell
                   align="center"
                   onClick={() => handleOpen(row.image)}
@@ -147,18 +148,16 @@ const DataTable = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
         backIconButtonProps={{
-          "aria-label": "Previous Page",
           onClick: leftIconHandler,
         }}
         nextIconButtonProps={{
-          "aria-label": "Next Page",
           onClick: rightIconHandler,
         }}
       />
 
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
-          <img src={url} alt="" height="400" />
+          <img src={url} height="400" alt="" />
         </Box>
       </Modal>
     </Paper>

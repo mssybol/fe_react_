@@ -91,11 +91,20 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-const Home = () => {
+const ColorButton = styled(Button)(({ theme }) => ({
+  color: theme.palette.getContrastText(purple[500]),
+  backgroundColor: purple[500],
+  "&:hover": {
+    backgroundColor: purple[700],
+  },
+}));
 
+const Home = () => {
   const { userInfo } = useSelector((state) => state.users);
 
-  const { products, currentCategory , totalNumberOfProducts} = useSelector((state) => state.products);
+  const { products, currentCategory, totalNumberOfProducts } = useSelector(
+    (state) => state.products
+  );
 
   const dispatch = useDispatch();
 
@@ -130,17 +139,7 @@ const Home = () => {
     return sellerCompanies;
   };
 
-  const ColorButton = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText(purple[500]),
-    backgroundColor: purple[500],
-    "&:hover": {
-      backgroundColor: purple[700],
-    },
-  }));
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  useEffect(() => fetchProducts(), []);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -149,7 +148,6 @@ const Home = () => {
         <Toolbar>
           <IconButton
             color="inherit"
-            aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
             sx={{
@@ -187,23 +185,20 @@ const Home = () => {
             )}
           </IconButton>
         </DrawerHeader>
-        <Typography
-          variant="p"
-          align="center"
-          sx={{ marginTop: 3, marginBottom: 3, fontSize: 18 }}
-        >
-          {open ? (
-            `Companies (${fetchCompanyNames().length})`
-          ) : (
-            <Badge
-              color="secondary"
-              badgeContent={fetchCompanyNames().length}
-              showZero
-            >
-              <BusinessIcon />
-            </Badge>
-          )}
-        </Typography>
+
+        <List>
+          <ListItem>
+            <ListItemIcon sx={{ marginLeft: 1 }}>
+              <Badge
+                color="secondary"
+                badgeContent={fetchCompanyNames().length}
+              >
+                <BusinessIcon />
+              </Badge>
+            </ListItemIcon>
+            <ListItemText primary="Companies" />
+          </ListItem>
+        </List>
         <Divider />
         <List>
           {fetchCompanyNames().map((text, i) => (
