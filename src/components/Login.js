@@ -30,7 +30,7 @@ const Copyright = (props) => {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://bebolbol.herokuapp.com/swagger/">
+      <Link color="inherit" href="https://mssybolbe.herokuapp.com/swagger/">
         Bol.com
       </Link>{" "}
       {new Date().getFullYear()}

@@ -3,7 +3,7 @@ import * as types from "../types";
 
 export const fetchProducts =
   (
-    url = "https://bebolbol.herokuapp.com/kruidvat/kruidvatInventory/?limit=25&offset=0"
+    url = "https://mssybolbe.herokuapp.com/kruidvat/kruidvatInventory/?limit=25&offset=0"
   ) =>
   async (dispatch) => {
     try {
