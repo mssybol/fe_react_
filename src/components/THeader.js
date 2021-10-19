@@ -12,11 +12,12 @@ const TableHeaderComponent = () => {
     "Title",
     "Subtitle",
     "Description",
+    "Item Count",
     "Price",
     "Mpn",
     "Sku",
-    "RatingValue",
-    "ReviewCount",
+    "Rating Value",
+    "Review Count",
     "Seller",
   ];
 

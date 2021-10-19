@@ -71,42 +71,46 @@ const DataTable = () => {
 
   return (
     <Paper sx={{ overflow: "hidden" }}>
-      <TableContainer
-        sx={{ maxHeight: "72vh", scrollBehavior: "smooth" }}
-        ref={tableRef}
-      >
-        <Table stickyHeader>
-          <TableHeaderComponent />
-          <TableBodyComponent
-            products={products}
-            page={page}
-            handleOpen={handleOpen}
+      {products.length ? (
+        <>
+          <TableContainer
+            sx={{ maxHeight: "72vh", scrollBehavior: "smooth" }}
+            ref={tableRef}
+          >
+            <Table stickyHeader>
+              <TableHeaderComponent />
+              <TableBodyComponent
+                products={products}
+                page={page}
+                handleOpen={handleOpen}
+                rowsPerPage={rowsPerPage}
+              />
+            </Table>
+          </TableContainer>
+
+          <TablePagination
+            rowsPerPageOptions={[25, 50, 100]}
+            component="div"
+            count={totalNumberOfProducts}
             rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            backIconButtonProps={{
+              onClick: leftIconHandler,
+            }}
+            nextIconButtonProps={{
+              onClick: rightIconHandler,
+            }}
           />
-        </Table>
-      </TableContainer>
 
-      <TablePagination
-        rowsPerPageOptions={[25, 50, 100]}
-        component="div"
-        count={totalNumberOfProducts}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-        backIconButtonProps={{
-          onClick: leftIconHandler,
-        }}
-        nextIconButtonProps={{
-          onClick: rightIconHandler,
-        }}
-      />
-
-      <Modal open={open} onClose={handleClose}>
-        <Box sx={style}>
-          <img src={url} height="400" alt="" />
-        </Box>
-      </Modal>
+          <Modal open={open} onClose={handleClose}>
+            <Box sx={style}>
+              <img src={url} height="400" alt="" />
+            </Box>
+          </Modal>
+        </>
+      ) : null}
     </Paper>
   );
 };

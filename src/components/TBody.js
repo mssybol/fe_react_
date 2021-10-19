@@ -29,6 +29,7 @@ const TableBodyComponent = ({ products, page, handleOpen ,rowsPerPage}) => {
           <TableCell align="center">{row.title}</TableCell>
           <TableCell align="center">{row.subtitle}</TableCell>
           <TableCell align="center">{row.description}</TableCell>
+          <TableCell align="center">{row.item_count}</TableCell>
           <TableCell align="center">{`${row.price} ${row.priceCurrency}`}</TableCell>
           <TableCell align="center">{row.mpn}</TableCell>
           <TableCell align="center">{row.sku}</TableCell>

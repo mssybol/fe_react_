@@ -23,7 +23,10 @@ const App = () => {
         let localStorageValue = JSON.parse(
           localStorage.getItem("authorizationInfo")
         );
-        if (localStorageValue?.rememberMe && JSON.parse(localStorage.getItem("authorization")).isLogin) {
+        if (
+          localStorageValue?.rememberMe &&
+          JSON.parse(localStorage.getItem("authorization")).isLogin
+        ) {
           userLogin(localStorageValue);
           setIsLogin(true);
         } else {

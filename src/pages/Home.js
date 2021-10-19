@@ -16,6 +16,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import BusinessIcon from "@mui/icons-material/Business";
+import ShowChartIcon from "@mui/icons-material/ShowChart";
 import { useDispatch, useSelector } from "react-redux";
 import { Badge, Button, LinearProgress } from "@mui/material";
 import { bindActionCreators } from "redux";
@@ -23,6 +24,8 @@ import { productActions, userActions } from "../redux/actions";
 import { purple } from "@mui/material/colors";
 import DataTable from "../components/DataTable";
 import colors from "../colors/index";
+import TableLayout from "./TableLayout";
+import Stock from "./Stock";
 
 const drawerWidth = 240;
 
@@ -99,12 +102,11 @@ const ColorButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const Home = () => {
+const Home = ({ location }) => {
+  console.log(location);
   const { userInfo } = useSelector((state) => state.users);
 
-  const { products, currentCategory, totalNumberOfProducts } = useSelector(
-    (state) => state.products
-  );
+  const { products, currentCategory } = useSelector((state) => state.products);
 
   const dispatch = useDispatch();
 
@@ -115,6 +117,8 @@ const Home = () => {
   const theme = useTheme();
 
   const [open, setOpen] = useState(false);
+
+  const [showStock, setShowStock] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -201,13 +205,16 @@ const Home = () => {
               button
               key={text}
               sx={{
-                backgroundColor: fetchCompanyNames().find(
-                  (item) => item === currentCategory
-                )
-                  ? "#F5F5F5"
-                  : "#FFF",
+                backgroundColor:
+                  !showStock &&
+                  fetchCompanyNames().find((item) => item === currentCategory)
+                    ? "#F5F5F5"
+                    : "#FFF",
               }}
-              onClick={() => selectCategory(text)}
+              onClick={() => {
+                selectCategory(text);
+                setShowStock(false);
+              }}
             >
               <ListItemIcon>
                 <Box
@@ -232,55 +239,27 @@ const Home = () => {
           ))}
         </List>
         <Divider />
+
+        <List>
+          <ListItem
+            button
+            onClick={() => setShowStock(true)}
+            sx={{
+              backgroundColor: showStock ? "#F5F5F5" : "#FFF",
+            }}
+          >
+            <ListItemIcon sx={{ marginLeft: 1 }}>
+              <ShowChartIcon />
+            </ListItemIcon>
+            <ListItemText primary="Stock" />
+          </ListItem>
+        </List>
+        <Divider />
       </Drawer>
+
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-
-        {currentCategory ? (
-          <>
-            <Box>
-              <Typography variant="h5" component="div">
-                {currentCategory}
-                <Badge
-                  sx={{ marginLeft: 3 }}
-                  badgeContent={
-                    products?.filter((item) => item.seller === currentCategory)
-                      .length
-                  }
-                  max={
-                    products?.filter((item) => item.seller === currentCategory)
-                      .length
-                  }
-                  color="secondary"
-                ></Badge>
-              </Typography>
-            </Box>
-
-            <Divider sx={{ marginBottom: 3, marginTop: 3 }} />
-          </>
-        ) : (
-          <>
-            {totalNumberOfProducts ? (
-              <Typography variant="h6" sx={{ marginBottom: 3 }} component="div">
-                All products ({totalNumberOfProducts}) are showing
-              </Typography>
-            ) : (
-              <>
-                <Typography
-                  align="center"
-                  variant="h6"
-                  sx={{ marginBottom: 3 }}
-                  component="div"
-                >
-                  Data's Loading...
-                </Typography>
-                <LinearProgress />
-              </>
-            )}
-          </>
-        )}
-
-        <DataTable />
+        {showStock ? <Stock /> : <TableLayout />}
       </Box>
     </Box>
   );
