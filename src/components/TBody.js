@@ -2,7 +2,7 @@ import React from "react";
 import { IconButton, TableBody, TableCell, TableRow } from "@mui/material";
 import LinkIcon from "@mui/icons-material/Link";
 
-const TableBodyComponent = ({ products, page, handleOpen }) => {
+const TableBodyComponent = ({ products, page, handleOpen ,rowsPerPage}) => {
   return (
     <TableBody>
       {products.map((row, index) => (
@@ -15,7 +15,7 @@ const TableBodyComponent = ({ products, page, handleOpen }) => {
               <LinkIcon />
             </IconButton>
           </TableCell>
-          <TableCell align="center">{page * 25 + index + 1}</TableCell>
+          <TableCell align="center">{page * rowsPerPage + index + 1}</TableCell>
           <TableCell align="center">{row.id}</TableCell>
           <TableCell
             align="center"

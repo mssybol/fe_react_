@@ -7,8 +7,9 @@ export const userLogin = (userData) => async (dispatch) => {
 
     dispatch({
       type: types.USER_LOGIN_SUCCESS,
-      payload: result,
+      payload: { result, userData },
     });
+    
   } catch ({ message, response }) {
     let error = response.data.non_field_errors[0];
     console.log(error);

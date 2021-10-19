@@ -11,12 +11,17 @@ const userReducer = (state = initialState, action) => {
         "authorization",
         JSON.stringify({
           isLogin: true,
-          token: action.payload.data.key,
+          token: action.payload.result.data.key,
         })
       );
 
+      localStorage.setItem(
+        "authorizationInfo",
+        JSON.stringify(action.payload.userData)
+      );
+
       return {
-        userInfo: action.payload.data,
+        userInfo: action.payload.result.data,
       };
 
     case types.USER_LOGIN_FAIL:
@@ -25,13 +30,9 @@ const userReducer = (state = initialState, action) => {
       };
 
     case types.USER_LOGOUT:
-      localStorage.setItem(
-        "authorization",
-        JSON.stringify({
-          isLogin: false,
-          token: null,
-        })
-      );
+      localStorage.removeItem("authorizationInfo");
+      
+      localStorage.removeItem("authorization");
 
       return initialState;
 

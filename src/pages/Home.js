@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -110,10 +110,7 @@ const Home = () => {
 
   const { userLogout } = bindActionCreators(userActions, dispatch);
 
-  const { fetchProducts, selectCategory } = bindActionCreators(
-    productActions,
-    dispatch
-  );
+  const { selectCategory } = bindActionCreators(productActions, dispatch);
 
   const theme = useTheme();
 
@@ -138,8 +135,6 @@ const Home = () => {
 
     return sellerCompanies;
   };
-
-  useEffect(() => fetchProducts(), []);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -285,7 +280,7 @@ const Home = () => {
           </>
         )}
 
-        {products?.length ? <DataTable /> : null}
+        <DataTable />
       </Box>
     </Box>
   );

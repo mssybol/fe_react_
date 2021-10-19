@@ -1,4 +1,4 @@
-import React, { createRef, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import {
   Modal,
   Box,
@@ -27,7 +27,7 @@ const style = {
 };
 
 const DataTable = () => {
-  const { products, nextUrl, previousUrl, totalNumberOfProducts } = useSelector(
+  const { products, totalNumberOfProducts } = useSelector(
     (state) => state.products
   );
 
@@ -38,6 +38,10 @@ const DataTable = () => {
   const [url, setUrl] = useState("");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
+
+  useEffect(() => {
+    fetchProducts(rowsPerPage, page * rowsPerPage);
+  }, [page, rowsPerPage]);
 
   const handleOpen = (urlProps) => {
     setOpen(true);
@@ -55,16 +59,13 @@ const DataTable = () => {
 
   const { fetchProducts } = bindActionCreators(productActions, dispatch);
 
- 
   const leftIconHandler = () => {
     setPage(page - 1);
-    fetchProducts(previousUrl);
     tableRef.current.scrollTop = 0;
   };
 
   const rightIconHandler = () => {
     setPage(page + 1);
-    fetchProducts(nextUrl);
     tableRef.current.scrollTop = 0;
   };
 
@@ -80,12 +81,13 @@ const DataTable = () => {
             products={products}
             page={page}
             handleOpen={handleOpen}
+            rowsPerPage={rowsPerPage}
           />
         </Table>
       </TableContainer>
 
       <TablePagination
-        rowsPerPageOptions={[25]}
+        rowsPerPageOptions={[25, 50, 100]}
         component="div"
         count={totalNumberOfProducts}
         rowsPerPage={rowsPerPage}

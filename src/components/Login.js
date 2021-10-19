@@ -9,13 +9,19 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import {
+  Checkbox,
   FormControl,
+  FormControlLabel,
   IconButton,
   InputAdornment,
   InputLabel,
   OutlinedInput,
 } from "@mui/material";
-import { AccountCircle, Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+  AccountCircle,
+  Visibility,
+  VisibilityOff,
+} from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { userActions } from "../redux/actions";
@@ -48,6 +54,7 @@ const Login = () => {
   const [values, setValues] = useState({
     username: "",
     password: "",
+    rememberMe: true,
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -125,6 +132,20 @@ const Login = () => {
               label="Password"
             />
           </FormControl>
+
+          <FormControlLabel
+            control={
+              <Checkbox
+                value="remember"
+                color="primary"
+                checked={values.rememberMe}
+                onChange={(e) => {
+                  setValues({ ...values, rememberMe: !values.rememberMe });
+                }}
+              />
+            }
+            label="Remember me"
+          />
 
           <Button
             type="submit"
