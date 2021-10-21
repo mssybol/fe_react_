@@ -161,6 +161,16 @@ const Stock = () => {
 
         <TextField
           variant="outlined"
+          type="number"
+          required
+          fullWidth
+          label="Item Count"
+          color="secondary"
+          sx={{ marginBottom: 2 }}
+        />
+
+        <TextField
+          variant="outlined"
           label="Description"
           color="secondary"
           sx={{ marginBottom: 2 }}
