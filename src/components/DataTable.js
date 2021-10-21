@@ -71,7 +71,7 @@ const DataTable = () => {
 
   return (
     <Paper sx={{ overflow: "hidden" }}>
-      {products.length ? (
+      {products?.length ? (
         <>
           <TableContainer
             sx={{ maxHeight: "72vh", scrollBehavior: "smooth" }}

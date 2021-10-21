@@ -24,3 +24,7 @@ export const userLogin = async (userData) =>
 /* data actions */
 
 export const fetchProducts = async (url) => await API.get(url);
+
+/* stock actions */
+
+export const getProductsFromStock = async (url) => await API.get(url);
