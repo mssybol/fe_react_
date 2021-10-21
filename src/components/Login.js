@@ -17,11 +17,7 @@ import {
   InputLabel,
   OutlinedInput,
 } from "@mui/material";
-import {
-  AccountCircle,
-  Visibility,
-  VisibilityOff,
-} from "@mui/icons-material";
+import { AccountCircle, Visibility, VisibilityOff } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { userActions } from "../redux/actions";

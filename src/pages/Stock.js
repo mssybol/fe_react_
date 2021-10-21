@@ -39,7 +39,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const Stock = () => {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(25);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [productValues, setProductValues] = useState({
     id: "",
@@ -53,7 +53,7 @@ const Stock = () => {
     text: "",
   });
 
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -188,7 +188,7 @@ const Stock = () => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[25]}
+          rowsPerPageOptions={[5]}
           component="div"
           count={stockList.length}
           rowsPerPage={rowsPerPage}

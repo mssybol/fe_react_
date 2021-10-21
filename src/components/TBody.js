@@ -2,16 +2,13 @@ import React from "react";
 import { IconButton, TableBody, TableCell, TableRow } from "@mui/material";
 import LinkIcon from "@mui/icons-material/Link";
 
-const TableBodyComponent = ({ products, page, handleOpen ,rowsPerPage}) => {
+const TableBodyComponent = ({ products, page, handleOpen, rowsPerPage }) => {
   return (
     <TableBody>
       {products.map((row, index) => (
         <TableRow key={row.id} tabIndex={-1}>
           <TableCell align="center">
-            <IconButton
-              href={row.url}
-              target="_blank"
-            >
+            <IconButton href={row.url} target="_blank">
               <LinkIcon />
             </IconButton>
           </TableCell>
