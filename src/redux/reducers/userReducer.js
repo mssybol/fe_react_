@@ -31,7 +31,7 @@ const userReducer = (state = initialState, action) => {
 
     case types.USER_LOGOUT:
       localStorage.removeItem("authorizationInfo");
-      
+
       localStorage.removeItem("authorization");
 
       return initialState;

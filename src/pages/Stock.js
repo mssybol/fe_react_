@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   TextField,
@@ -11,11 +11,16 @@ import {
   TableCell,
   TableBody,
   TablePagination,
+  IconButton,
 } from "@mui/material";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 import EuroIcon from "@mui/icons-material/Euro";
-import { useDispatch } from "react-redux";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { stockActions } from "../redux/actions";
+import { addProductToStock, removeProductFromStock } from "../axios";
 
 const columns = [
   "No",
@@ -25,24 +30,40 @@ const columns = [
   "Price",
   "Item Count",
   "Description",
+  "",
 ];
 
-const rows = [
-  {
-    id: 1,
-    ean: "8719179782861",
-    description: "zwart, mt 42-44",
-    store_name: "Kruidvat Ladder Resist Mat 15 Den Pantyasdasdasdasdasd",
-    price: 2.9925,
-    item_count: 2,
-    last_updated: "2021-10-20T15:27:35.154532Z",
-    created_date: "2021-10-20T15:27:35.154565Z",
-  },
-];
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const Stock = () => {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
+
+  const [productValues, setProductValues] = useState({
+    id: "",
+    ean: "",
+    price: "",
+    itemCount: "",
+  });
+
+  const [message, setMessage] = useState({
+    severity: "",
+    text: "",
+  });
+
+  const [open, setOpen] = useState(true);
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const { stockList } = useSelector((state) => state.stock);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -55,21 +76,74 @@ const Stock = () => {
 
   const dispatch = useDispatch();
 
-  /* const { getProductsFromStock } = bindActionCreators(stockActions, dispatch);*/
+  const { getProductsFromStock } = bindActionCreators(stockActions, dispatch);
+
+  useEffect(() => {
+    getProductsFromStock();
+  }, [page, rowsPerPage]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await addProductToStock(productValues);
+
+    getProductsFromStock();
+
+    setMessage({
+      severity: "success",
+      text: "Product added to stock.",
+    });
+
+    setOpen(true);
+
+    setProductValues({
+      id: "",
+      ean: "",
+      price: "",
+      itemCount: "",
+    });
+  };
+
+  const removeProduct = async (id) => {
+    const url = `https://bolbec.herokuapp.com/bolbol/stockList/${id}/`;
+
+    await removeProductFromStock(url);
+
+    getProductsFromStock();
+
+    setMessage({
+      severity: "error",
+      text: "Product removed from stock.",
+    });
+
+    setOpen(true);
+  };
   return (
     <Paper
       sx={{
         display: "flex",
-        justifyContent: "space-between",
+        justifyContent: "space-evenly",
         padding: 3,
         flexWrap: "wrap",
       }}
     >
-      <Paper>
+      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+        <Alert
+          onClose={handleClose}
+          severity={message.severity}
+          sx={{ width: "100%" }}
+        >
+          {message.text}
+        </Alert>
+      </Snackbar>
+
+      <Paper
+        sx={{
+          marginBottom: 2,
+        }}
+      >
         <TableContainer
           sx={{
             minHeight: 440,
-            marginBottom: 2,
             maxWidth: 1200,
             overflow: "auto",
           }}
@@ -85,7 +159,7 @@ const Stock = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows
+              {stockList
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   return (
@@ -96,9 +170,17 @@ const Stock = () => {
                       <TableCell align="center">{row.id}</TableCell>
                       <TableCell align="center">{row.store_name}</TableCell>
                       <TableCell align="center">{row.ean}</TableCell>
-                      <TableCell align="center">{row.price}</TableCell>
+                      <TableCell align="center">{row.price} €</TableCell>
                       <TableCell align="center">{row.item_count}</TableCell>
                       <TableCell align="center">{row.description}</TableCell>
+                      <TableCell align="center">
+                        <IconButton
+                          size="medium"
+                          onClick={() => removeProduct(row.id)}
+                        >
+                          <DeleteIcon fontSize="inherit" />
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -106,9 +188,9 @@ const Stock = () => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
+          rowsPerPageOptions={[25]}
           component="div"
-          count={rows.length}
+          count={stockList.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -125,26 +207,41 @@ const Stock = () => {
           alignItems: "center",
           justifyContent: "center",
         }}
+        onSubmit={handleSubmit}
         autoComplete="off"
       >
-        <TextField
-          variant="outlined"
-          required
-          fullWidth
-          label="Store Name"
-          color="secondary"
-          sx={{ marginBottom: 2 }}
-        />
+        <Box
+          component="div"
+          sx={{ display: "flex", justifyContent: "space-between", width: 500 }}
+        >
+          <TextField
+            variant="outlined"
+            type="number"
+            required
+            fullWidth
+            label="Id"
+            color="secondary"
+            sx={{ marginBottom: 2, width: 240 }}
+            value={productValues.id}
+            onChange={(e) =>
+              setProductValues({ ...productValues, id: e.target.value })
+            }
+          />
 
-        <TextField
-          variant="outlined"
-          type="number"
-          required
-          fullWidth
-          label="Ean"
-          color="secondary"
-          sx={{ marginBottom: 2 }}
-        />
+          <TextField
+            variant="outlined"
+            type="number"
+            required
+            fullWidth
+            label="Ean"
+            color="secondary"
+            sx={{ marginBottom: 2, width: 240 }}
+            value={productValues.ean}
+            onChange={(e) =>
+              setProductValues({ ...productValues, ean: e.target.value })
+            }
+          />
+        </Box>
 
         <TextField
           variant="outlined"
@@ -155,8 +252,12 @@ const Stock = () => {
           color="secondary"
           sx={{ marginBottom: 2 }}
           InputProps={{
-            endAdornment: <EuroIcon>$</EuroIcon>,
+            endAdornment: <EuroIcon />,
           }}
+          value={productValues.price}
+          onChange={(e) =>
+            setProductValues({ ...productValues, price: e.target.value })
+          }
         />
 
         <TextField
@@ -167,15 +268,10 @@ const Stock = () => {
           label="Item Count"
           color="secondary"
           sx={{ marginBottom: 2 }}
-        />
-
-        <TextField
-          variant="outlined"
-          label="Description"
-          color="secondary"
-          sx={{ marginBottom: 2 }}
-          fullWidth
-          inputProps={{ max: 20 }}
+          value={productValues.itemCount}
+          onChange={(e) =>
+            setProductValues({ ...productValues, itemCount: e.target.value })
+          }
         />
 
         <Button

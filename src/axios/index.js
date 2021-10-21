@@ -28,3 +28,8 @@ export const fetchProducts = async (url) => await API.get(url);
 /* stock actions */
 
 export const getProductsFromStock = async (url) => await API.get(url);
+
+export const addProductToStock = async (product) =>
+  await API.post("bolbol/send_to_stock/", product);
+
+export const removeProductFromStock = async (url) => await API.delete(url);

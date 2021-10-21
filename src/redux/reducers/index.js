@@ -6,7 +6,7 @@ import stockReducer from "./stockReducer";
 const reducers = combineReducers({
   users: userReducer,
   products: productReducer,
-  stock: stockReducer
+  stock: stockReducer,
 });
 
 export default reducers;
