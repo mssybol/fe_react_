@@ -5,7 +5,7 @@ export const fetchProducts =
   (limit = 25, offset = 0) =>
   async (dispatch) => {
     try {
-      const url = `https://mssybolbe.herokuapp.com/kruidvat/kruidvatInventory/?limit=${limit}&offset=${offset}`;
+      const url = `https://bolbec.herokuapp.com/kruidvat/kruidvatInventory/?limit=${limit}&offset=${offset}`;
       const { data } = await API.fetchProducts(url);
 
       dispatch({

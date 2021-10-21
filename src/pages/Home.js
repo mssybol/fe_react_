@@ -102,8 +102,7 @@ const ColorButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const Home = ({ location }) => {
-  console.log(location);
+const Home = () => {
   const { userInfo } = useSelector((state) => state.users);
 
   const { products, currentCategory } = useSelector((state) => state.products);
