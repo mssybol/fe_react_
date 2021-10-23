@@ -1,5 +1,5 @@
 import React, { useEffect, useState, createRef } from "react";
-import { Paper, TablePagination } from "@mui/material";
+import { Divider, Paper, TablePagination, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { stockActions } from "../redux/actions";
@@ -115,52 +115,61 @@ const Stock = () => {
   };
 
   return (
-    <Paper
-      sx={{
-        display: "flex",
-        justifyContent: "space-evenly",
-        padding: 3,
-        flexWrap: "wrap",
-      }}
-    >
-      <AlertComponent open={open} handleClose={handleClose} message={message} />
-
+    <>
+      <Typography variant="h5" component="div">
+        Stock List
+      </Typography>{" "}
+      <Divider sx={{ marginBottom: 2, marginTop: 2 }} />
       <Paper
+        elevation={0}
         sx={{
-          marginBottom: 2,
+          display: "flex",
+          justifyContent: "space-evenly",
+          paddingTop: 1,
         }}
       >
-        <StockListTable
-          tableRef={tableRef}
-          columns={columns}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          removeProduct={removeProduct}
-          stockList={stockList}
+        <AlertComponent
+          open={open}
+          handleClose={handleClose}
+          message={message}
         />
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 50]}
-          component="div"
-          count={totalNumberOfStockList}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          backIconButtonProps={{
-            onClick: leftIconHandler,
+        <Paper
+          sx={{
+            marginBottom: 2,
+            marginRight: 2,
           }}
-          nextIconButtonProps={{
-            onClick: rightIconHandler,
-          }}
+        >
+          <StockListTable
+            tableRef={tableRef}
+            columns={columns}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            removeProduct={removeProduct}
+            stockList={stockList}
+          />
+          <TablePagination
+            rowsPerPageOptions={[10, 25, 50]}
+            component="div"
+            count={totalNumberOfStockList}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            backIconButtonProps={{
+              onClick: leftIconHandler,
+            }}
+            nextIconButtonProps={{
+              onClick: rightIconHandler,
+            }}
+          />
+        </Paper>
+        <StockListForm
+          handleSubmit={handleSubmit}
+          productValues={productValues}
+          setProductValues={setProductValues}
         />
       </Paper>
-
-      <StockListForm
-        handleSubmit={handleSubmit}
-        productValues={productValues}
-        setProductValues={setProductValues}
-      />
-    </Paper>
+    </>
   );
 };
 

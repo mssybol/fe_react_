@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Offline, Online } from "react-detect-offline";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { userActions } from "./redux/actions";
@@ -39,11 +39,14 @@ const App = () => {
   });
   return (
     <React.Fragment>
-      <Router>
-        <Switch>
-          <Route exact path="/" component={isLogin ? Home : Login} />
-        </Switch>
-      </Router>
+      <Online>
+        <Router>
+          <Switch>
+            <Route exact path="/" component={isLogin ? Home : Login} />
+          </Switch>
+        </Router>
+      </Online>
+      <Offline>No Internet. Please check your connection.</Offline>
     </React.Fragment>
   );
 };

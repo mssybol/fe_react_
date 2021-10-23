@@ -18,7 +18,6 @@ const StockListTable = ({
   removeProduct,
   stockList,
 }) => {
-  console.log(stockList);
   return (
     <TableContainer
       sx={{
