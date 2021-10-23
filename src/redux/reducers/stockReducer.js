@@ -2,6 +2,7 @@ import * as types from "../types";
 
 const initialState = {
   stockList: [],
+  totalNumberOfStockList: 0,
 };
 
 const stockReducer = (state = initialState, action) => {
@@ -10,6 +11,7 @@ const stockReducer = (state = initialState, action) => {
       return {
         ...state,
         stockList: action.payload.results,
+        totalNumberOfStockList: action.payload.count,
       };
 
     case types.GET_PRODUCTS_FROM_STOCK_FAIL:

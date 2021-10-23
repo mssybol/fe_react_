@@ -1,17 +1,9 @@
 import React, { createRef, useEffect, useState } from "react";
-import {
-  Modal,
-  Box,
-  TablePagination,
-  Paper,
-  Table,
-  TableContainer,
-} from "@mui/material";
+import { Modal, Box, TablePagination, Paper } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { productActions } from "../redux/actions";
-import TableBodyComponent from "./TBody";
-import TableHeaderComponent from "./THeader";
+import ProductListTable from "./ProductListTable";
 
 const style = {
   position: "absolute",
@@ -55,6 +47,7 @@ const DataTable = () => {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+    tableRef.current.scrollTop = 0;
   };
 
   const { fetchProducts } = bindActionCreators(productActions, dispatch);
@@ -69,24 +62,37 @@ const DataTable = () => {
     tableRef.current.scrollTop = 0;
   };
 
+  const headerRows = [
+    "Url",
+    "No",
+    "Id",
+    "Image",
+    "Ean",
+    "Brand",
+    "Title",
+    "Subtitle",
+    "Description",
+    "Item Count",
+    "Price",
+    "Mpn",
+    "Sku",
+    "Rating Value",
+    "Review Count",
+    "Seller",
+  ];
+
   return (
     <Paper sx={{ overflow: "hidden" }}>
       {products?.length ? (
         <>
-          <TableContainer
-            sx={{ maxHeight: "72vh", scrollBehavior: "smooth" }}
-            ref={tableRef}
-          >
-            <Table stickyHeader>
-              <TableHeaderComponent />
-              <TableBodyComponent
-                products={products}
-                page={page}
-                handleOpen={handleOpen}
-                rowsPerPage={rowsPerPage}
-              />
-            </Table>
-          </TableContainer>
+          <ProductListTable
+            tableRef={tableRef}
+            headerRows={headerRows}
+            products={products}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            handleOpen={handleOpen}
+          />
 
           <TablePagination
             rowsPerPageOptions={[25, 50, 100]}
