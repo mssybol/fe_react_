@@ -1,5 +1,4 @@
 import React from "react";
-import EuroIcon from "@mui/icons-material/Euro";
 import { Button, TextField, Box, Typography } from "@mui/material";
 
 const StockListForm = ({ handleSubmit, productValues, setProductValues }) => {
@@ -66,7 +65,7 @@ const StockListForm = ({ handleSubmit, productValues, setProductValues }) => {
         color="secondary"
         sx={{ marginBottom: 2 }}
         InputProps={{
-          endAdornment: <EuroIcon />,
+          endAdornment: "$",
         }}
         value={productValues.price}
         onChange={(e) =>
@@ -95,7 +94,6 @@ const StockListForm = ({ handleSubmit, productValues, setProductValues }) => {
         sx={{ marginBottom: 2 }}
         type="submit"
         fullWidth
-        sx={{ marginBottom: 2 }}
       >
         Add
       </Button>

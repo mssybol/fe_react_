@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://bolbec.herokuapp.com/",
+  baseURL: "http://185.237.253.254:8000/",
 });
 
 API.interceptors.request.use((req) => {
@@ -17,7 +17,7 @@ API.interceptors.request.use((req) => {
 
 export const userLogin = async (userData) =>
   await axios.post(
-    "https://bolbec.herokuapp.com/accounts/auth/login/",
+    "http://185.237.253.254:8000/accounts/auth/login/",
     userData
   );
 

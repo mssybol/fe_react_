@@ -1,5 +1,17 @@
 import React, { createRef, useEffect, useState } from "react";
-import { Modal, Box, TablePagination, Paper } from "@mui/material";
+import {
+  Modal,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Box,
+  TablePagination,
+  Paper,
+} from "@mui/material";
+
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { productActions } from "../redux/actions";
@@ -19,7 +31,7 @@ const style = {
 };
 
 const DataTable = () => {
-  const { products, totalNumberOfProducts } = useSelector(
+  const { products, totalNumberOfProducts, currentCategory } = useSelector(
     (state) => state.products
   );
 
@@ -31,9 +43,11 @@ const DataTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
 
+  const { fetchProducts } = bindActionCreators(productActions, dispatch);
+
   useEffect(() => {
-    fetchProducts(rowsPerPage, page * rowsPerPage);
-  }, [page, rowsPerPage]);
+    fetchProducts(currentCategory, rowsPerPage, page * rowsPerPage);
+  }, [page, rowsPerPage, currentCategory]);
 
   const handleOpen = (urlProps) => {
     setOpen(true);
@@ -49,8 +63,6 @@ const DataTable = () => {
     setPage(0);
     tableRef.current.scrollTop = 0;
   };
-
-  const { fetchProducts } = bindActionCreators(productActions, dispatch);
 
   const leftIconHandler = () => {
     setPage(page - 1);
@@ -116,7 +128,24 @@ const DataTable = () => {
             </Box>
           </Modal>
         </>
-      ) : null}
+      ) : (
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                {headerRows.map((item) => (
+                  <TableCell key={item}>{item}</TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell align="center" colSpan={headerRows.length}>No Data</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </Paper>
   );
 };

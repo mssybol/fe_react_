@@ -57,14 +57,8 @@ const TableLayout = () => {
               {currentCategory}
               <Badge
                 sx={{ marginLeft: 3 }}
-                badgeContent={
-                  products?.filter((item) => item.seller === currentCategory)
-                    .length
-                }
-                max={
-                  products?.filter((item) => item.seller === currentCategory)
-                    .length
-                }
+                badgeContent={products?.length}
+                max={products?.length}
                 color="secondary"
               ></Badge>
             </Typography>

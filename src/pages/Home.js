@@ -104,7 +104,7 @@ const ColorButton = styled(Button)(({ theme }) => ({
 const Home = () => {
   const { userInfo } = useSelector((state) => state.users);
 
-  const { products, currentCategory } = useSelector((state) => state.products);
+  const { currentCategory } = useSelector((state) => state.products);
 
   const dispatch = useDispatch();
 
@@ -118,24 +118,14 @@ const Home = () => {
 
   const [showStock, setShowStock] = useState(false);
 
+  const [sellerCompanies] = useState(["Kruidvat", "Drogist", "Etos"]);
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
 
   const handleDrawerClose = () => {
     setOpen(false);
-  };
-
-  const fetchCompanyNames = () => {
-    const sellerCompanies = [];
-    for (let i = 0; i < products?.length; i++) {
-      const product = products[i];
-
-      if (!sellerCompanies.includes(product.seller))
-        sellerCompanies.push(product.seller);
-    }
-
-    return sellerCompanies;
   };
 
   return (
@@ -186,10 +176,7 @@ const Home = () => {
         <List>
           <ListItem>
             <ListItemIcon sx={{ marginLeft: 1 }}>
-              <Badge
-                color="secondary"
-                badgeContent={fetchCompanyNames().length}
-              >
+              <Badge color="secondary" badgeContent={sellerCompanies.length}>
                 <BusinessIcon />
               </Badge>
             </ListItemIcon>
@@ -198,14 +185,13 @@ const Home = () => {
         </List>
         <Divider />
         <List>
-          {fetchCompanyNames().map((text, i) => (
+          {sellerCompanies.map((text, i) => (
             <ListItem
               button
               key={text}
               sx={{
                 backgroundColor:
-                  !showStock &&
-                  fetchCompanyNames().find((item) => item === currentCategory)
+                  !showStock && sellerCompanies[i] === currentCategory
                     ? "#F5F5F5"
                     : "#FFF",
               }}

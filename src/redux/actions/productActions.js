@@ -2,10 +2,15 @@ import * as API from "../../axios/index";
 import * as types from "../types";
 
 export const fetchProducts =
-  (limit = 25, offset = 0) =>
+  (category, limit = 25, offset = 0) =>
   async (dispatch) => {
     try {
-      const url = `https://bolbec.herokuapp.com/kruidvat/kruidvatInventory/?limit=${limit}&offset=${offset}`;
+      let url = `http://185.237.253.254:8000/kruidvat/kruidvatInventory/?limit=${limit}&offset=${offset}`;
+      if (category === "Drogist")
+        url = `http://185.237.253.254:8000/drogist/DrogistInventory/?limit=${limit}&offset=${offset}`;
+      if (category === "Etos")
+        url = `http://185.237.253.254:8000/etos/EtosInventory/?limit=${limit}&offset=${offset}`;
+
       const { data } = await API.fetchProducts(url);
 
       dispatch({

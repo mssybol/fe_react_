@@ -100,7 +100,7 @@ const Stock = () => {
   };
 
   const removeProduct = async (id) => {
-    const url = `https://bolbec.herokuapp.com/bolbol/stockList/${id}/`;
+    const url = `http://185.237.253.254:8000/bolbol/stockList/${id}/`;
 
     await removeProductFromStock(url);
 
