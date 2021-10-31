@@ -21,7 +21,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Badge, Button } from "@mui/material";
 import { bindActionCreators } from "redux";
 import { productActions, userActions } from "../redux/actions";
-import { purple } from "@mui/material/colors";
 import colors from "../colors/index";
 import TableLayout from "./TableLayout";
 import Stock from "./Stock";
@@ -93,13 +92,7 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-const ColorButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.getContrastText(purple[500]),
-  backgroundColor: purple[500],
-  "&:hover": {
-    backgroundColor: purple[700],
-  },
-}));
+
 
 const Home = () => {
   const { userInfo } = useSelector((state) => state.users);
@@ -131,7 +124,8 @@ const Home = () => {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open} color="inherit" 
+      >
         <Toolbar>
           <IconButton
             color="inherit"
@@ -156,9 +150,9 @@ const Home = () => {
               {userInfo?.user.first_name} - {userInfo?.user.last_name}
             </Typography>
 
-            <ColorButton variant="contained" onClick={userLogout}>
+            <Button variant="outlined" onClick={userLogout}>
               Sign Out
-            </ColorButton>
+            </Button>
           </Box>
         </Toolbar>
       </AppBar>

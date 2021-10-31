@@ -36,7 +36,7 @@ const ProductListTable = ({
           </TableHead>
 
           <TableBody>
-            {products.map((row, index) => (
+            {products?.map((row, index) => (
               <TableRow key={row.id} tabIndex={-1}>
                 <TableCell align="center">
                   <IconButton href={row.url} target="_blank">

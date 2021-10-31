@@ -115,7 +115,7 @@ const Stock = () => {
   };
 
   return (
-    <>
+    <React.Fragment>
       <Typography variant="h5" component="div">
         Stock List
       </Typography>{" "}
@@ -169,7 +169,7 @@ const Stock = () => {
           setProductValues={setProductValues}
         />
       </Paper>
-    </>
+    </React.Fragment>
   );
 };
 

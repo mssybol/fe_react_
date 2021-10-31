@@ -2,7 +2,7 @@ import * as types from "../types";
 
 const initialState = {
   products: [],
-  currentCategory: null,
+  currentCategory: "Kruidvat",
   totalNumberOfProducts: 0,
 };
 

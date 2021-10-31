@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import {
-  Badge,
   Divider,
   Typography,
   Box,
-  LinearProgress,
   Paper,
+  Stack,
+  Chip,
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import InputBase from "@mui/material/InputBase";
@@ -28,6 +28,7 @@ const TableLayout = () => {
         alignItems: "center",
         width: 400,
       }}
+      elevation={5}
     >
       <InputBase
         sx={{ ml: 1, flex: 1 }}
@@ -43,9 +44,9 @@ const TableLayout = () => {
   );
 
   return (
-    <>
+    <React.Fragment>
       {currentCategory ? (
-        <>
+        <React.Fragment>
           <Box
             sx={{
               display: "flex",
@@ -53,25 +54,36 @@ const TableLayout = () => {
               alignItems: "center",
             }}
           >
-            <Typography variant="h4" component="div">
-              {currentCategory}
-              <Badge
-                sx={{ marginLeft: 3 }}
-                badgeContent={products?.length}
-                max={products?.length}
-                color="secondary"
-              ></Badge>
-            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Typography variant="h4" component="div">
+                {currentCategory}
+              </Typography>
+              <Stack sx={{ marginLeft: 2 }}>
+                <Chip
+                  sx={{ marginTop: 0.5 }}
+                  label={products?.length}
+                  color="success"
+                  variant="outlined"
+                  size="small"
+                />
+              </Stack>
+            </Box>
 
             {Search}
           </Box>
 
           <Divider sx={{ marginBottom: 3, marginTop: 3 }} />
-        </>
+        </React.Fragment>
       ) : (
-        <>
+        <React.Fragment>
           {totalNumberOfProducts ? (
-            <>
+            <React.Fragment>
               <Box
                 sx={{
                   display: "flex",
@@ -85,25 +97,13 @@ const TableLayout = () => {
                 {Search}
               </Box>
               <Divider sx={{ marginBottom: 2, marginTop: 2 }} />
-            </>
-          ) : (
-            <>
-              <Typography
-                align="center"
-                variant="h6"
-                sx={{ marginBottom: 3 }}
-                component="div"
-              >
-                Data's Loading...
-              </Typography>
-              <LinearProgress />
-            </>
-          )}
-        </>
+            </React.Fragment>
+          ) : null}
+        </React.Fragment>
       )}
 
       <DataTable />
-    </>
+    </React.Fragment>
   );
 };
 

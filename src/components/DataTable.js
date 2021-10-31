@@ -1,15 +1,11 @@
 import React, { createRef, useEffect, useState } from "react";
 import {
   Modal,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Box,
   TablePagination,
   Paper,
+  LinearProgress,
+  Typography,
 } from "@mui/material";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -94,59 +90,56 @@ const DataTable = () => {
   ];
 
   return (
-    <Paper sx={{ overflow: "hidden" }}>
+    <React.Fragment>
       {products?.length ? (
-        <>
-          <ProductListTable
-            tableRef={tableRef}
-            headerRows={headerRows}
-            products={products}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            handleOpen={handleOpen}
-          />
+        <React.Fragment>
+          <Paper sx={{ overflow: "hidden" }}>
+            <ProductListTable
+              tableRef={tableRef}
+              headerRows={headerRows}
+              products={products}
+              page={page}
+              rowsPerPage={rowsPerPage}
+              handleOpen={handleOpen}
+            />
 
-          <TablePagination
-            rowsPerPageOptions={[25, 50, 100]}
-            component="div"
-            count={totalNumberOfProducts}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            backIconButtonProps={{
-              onClick: leftIconHandler,
-            }}
-            nextIconButtonProps={{
-              onClick: rightIconHandler,
-            }}
-          />
+            <TablePagination
+              rowsPerPageOptions={[25, 50, 100]}
+              component="div"
+              count={totalNumberOfProducts}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              backIconButtonProps={{
+                onClick: leftIconHandler,
+              }}
+              nextIconButtonProps={{
+                onClick: rightIconHandler,
+              }}
+            />
 
-          <Modal open={open} onClose={handleClose}>
-            <Box sx={style}>
-              <img src={url} height="400" alt="" />
-            </Box>
-          </Modal>
-        </>
+            <Modal open={open} onClose={handleClose}>
+              <Box sx={style}>
+                <img src={url} height="400" alt="" />
+              </Box>
+            </Modal>
+          </Paper>
+        </React.Fragment>
       ) : (
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                {headerRows.map((item) => (
-                  <TableCell key={item}>{item}</TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow>
-                <TableCell align="center" colSpan={headerRows.length}>No Data</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <React.Fragment>
+          <Typography
+            align="center"
+            variant="h6"
+            sx={{ marginBottom: 3 }}
+            component="div"
+          >
+            Data's Loading...
+          </Typography>
+          <LinearProgress />
+        </React.Fragment>
       )}
-    </Paper>
+    </React.Fragment>
   );
 };
 
